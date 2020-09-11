@@ -299,7 +299,6 @@ Let's plot these two datasets with different colors:
     ax.plot(test[0][0], test[0][1], ".b", label="test")
     ax.legend()
     ax.set_aspect("equal")
-    plt.tight_layout()
     plt.show()
 
 
@@ -403,7 +402,6 @@ the grid:
     plt.colorbar(pc).set_label("C")
     ax.plot(data.longitude, data.latitude, ".k", markersize=1, transform=ccrs.PlateCarree())
     vd.datasets.setup_texas_wind_map(ax)
-    plt.tight_layout()
     plt.show()
 
 
@@ -413,19 +411,6 @@ the grid:
     :alt: Gridded temperature
     :class: sphx-glr-single-img
 
-
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:782: MatplotlibDeprecationWarning: Passing the minor parameter of set_xticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
-      return super(GeoAxes, self).set_xticks(xticks, minor)
-    /home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:829: MatplotlibDeprecationWarning: Passing the minor parameter of set_yticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
-      return super(GeoAxes, self).set_yticks(yticks, minor)
-    /home/travis/build/fatiando/verde/tutorials/model_evaluation.py:123: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations. 
-      plt.tight_layout()
 
 
 
@@ -456,7 +441,7 @@ meaning a perfect prediction, but has no lower bound.
 
  .. code-block:: none
 
-    R² score: 0.8404552994988748
+    R² score: 0.8404552994967855
 
 
 
@@ -491,7 +476,7 @@ wasn't used in the gridding algorithm.
 
  .. code-block:: none
 
-    R² score with seed 1: 0.7832246926703487
+    R² score with seed 1: 0.7832246926697958
 
 
 
@@ -524,7 +509,7 @@ can then take a mean of these scores.
  .. code-block:: none
 
     k-fold scores: [0.81655898 0.72019255 0.81596348 0.87740087 0.75006854]
-    Mean score: 0.7960368854849694
+    Mean score: 0.7960368854832034
 
 
 
@@ -560,7 +545,7 @@ want to shuffle then split the data *n* times
 
     shuffle scores: [0.8404553  0.79219264 0.60098099 0.73123421 0.67325199 0.70560489
      0.68905622 0.83517217 0.86908658 0.84133251]
-    Mean score: 0.7578367516988477
+    Mean score: 0.7578367516992626
 
 
 
@@ -594,7 +579,7 @@ To run :func:`verde.cross_val_score` with Dask, use the ``delayed`` argument:
 
  .. code-block:: none
 
-    Delayed k-fold scores: [Delayed('fit_score-f68b98ce-b9db-4d81-ac08-dee6a3bc4029'), Delayed('fit_score-40108b11-e941-4342-a0ab-160a0af18065'), Delayed('fit_score-45ae31ae-73bb-4029-bf5e-4bf790a777dd'), Delayed('fit_score-7f17538c-12a0-4b77-8fc2-9614f8df4167'), Delayed('fit_score-c68750f9-773b-439f-bc7e-c56aded4a7a9')]
+    Delayed k-fold scores: [Delayed('fit_score-70d79b05-4d43-4e0e-8c35-2f9cd839bb96'), Delayed('fit_score-64a1bc5f-b5f9-4152-84fe-2d2a881d9d19'), Delayed('fit_score-9a0ccd21-544b-4dca-bc1c-a90e90124f58'), Delayed('fit_score-f3966a55-12dd-42a7-9939-07d38f6a4a9e'), Delayed('fit_score-219caa82-da25-4825-9570-710df4450b33')]
 
 
 
@@ -623,7 +608,7 @@ are interested only in the mean score, we can schedule the mean as well using
 
  .. code-block:: none
 
-    Delayed mean: Delayed('mean-768696ae-1438-45dd-bdfd-97333884177b')
+    Delayed mean: Delayed('mean-bb25b15d-f3a0-4440-bd33-6d821891d83b')
 
 
 
@@ -649,7 +634,7 @@ things in parallel.
 
  .. code-block:: none
 
-    Mean score: 0.7960368854849694
+    Mean score: 0.7960368854832034
 
 
 
@@ -672,7 +657,7 @@ that.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.700 seconds)
+   **Total running time of the script:** ( 0 minutes  0.740 seconds)
 
 
 .. _sphx_glr_download_tutorials_model_evaluation.py:

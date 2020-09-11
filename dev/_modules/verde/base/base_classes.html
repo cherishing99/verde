@@ -232,13 +232,11 @@
 
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">BaseCrossValidator</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">r2_score</span>
 
 <span class="kn">from</span> <span class="nn">..coordinates</span> <span class="kn">import</span> <span class="n">grid_coordinates</span><span class="p">,</span> <span class="n">profile_coordinates</span><span class="p">,</span> <span class="n">scatter_points</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">check_data</span><span class="p">,</span> <span class="n">check_fit_input</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">check_data</span><span class="p">,</span> <span class="n">score_estimator</span>
 
 
 <span class="c1"># Pylint doesn&#39;t like X, y scikit-learn argument names.</span>
@@ -264,7 +262,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_splits</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="k">if</span> <span class="n">spacing</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Either &#39;spacing&#39; or &#39;shape&#39; must be provided.&quot;</span><span class="p">)</span>
@@ -561,17 +562,7 @@
 <span class="sd">            The R^2 score</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">check_fit_input</span><span class="p">(</span>
-            <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="kc">False</span>
-        <span class="p">)</span>
-        <span class="n">pred</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">coordinates</span><span class="p">))</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
-            <span class="p">[</span>
-                <span class="n">r2_score</span><span class="p">(</span><span class="n">datai</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">predi</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">weighti</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">datai</span><span class="p">,</span> <span class="n">predi</span><span class="p">,</span> <span class="n">weighti</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
-            <span class="p">]</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span></div>
+        <span class="k">return</span> <span class="n">score_estimator</span><span class="p">(</span><span class="s2">&quot;r2&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="BaseGridder.grid"><a class="viewcode-back" href="../../../api/generated/verde.base.BaseGridder.html#verde.BaseGridder.grid">[docs]</a>    <span class="k">def</span> <span class="nf">grid</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -616,7 +607,7 @@
 <span class="sd">            order: northing dimension, easting dimension.</span>
 <span class="sd">            **NOTE: This is an exception to the &quot;easting&quot; then</span>
 <span class="sd">            &quot;northing&quot; pattern but is required for compatibility with xarray.**</span>
-<span class="sd">        data_names : list of None</span>
+<span class="sd">        data_names : list or None</span>
 <span class="sd">            The name(s) of the data variables in the output grid. Defaults to</span>
 <span class="sd">            ``[&#39;scalars&#39;]`` for scalar data,</span>
 <span class="sd">            ``[&#39;east_component&#39;, &#39;north_component&#39;]`` for 2D vector data, and</span>
@@ -895,7 +886,7 @@
 
 <span class="k">def</span> <span class="nf">project_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">projection</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Apply projection to given coordiantes</span>
+<span class="sd">    Apply projection to given coordinates</span>
 
 <span class="sd">    Allows to apply projections to any number of coordinates, assuming</span>
 <span class="sd">    that the first ones are ``longitude`` and ``latitude``.</span>
@@ -996,7 +987,7 @@
     <p>
         &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jun 04, 2020.
+        Last updated on Sep 11, 2020.
       </span>
 
     </p>
